@@ -1,0 +1,38 @@
+name: manage-azure-policy-ad5bc053
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Azure_API_for_FHIR_should_use_a_customer-managed_key_to_encrypt_data_at_rest_051cba44-2429-45b9-9649-46cec11c7119/**'
+#      - 'policies/CORS_should_not_allow_every_domain_to_access_your_API_for_FHIR_0fea8f8a-4169-495d-8307-30ec335f387d/**'
+#      - 'policies/Azure_API_for_FHIR_should_use_private_link_1ee56206-5dd1-42ab-b02d-8aae8b1634ce/**'
+#      - 'policies/CORS_should_not_allow_every_domain_to_access_your_FHIR_Service_fe1c9040-c46a-4e81-9aea-c7850fbb3aa6/**'
+#      - .github/workflows/manage-azure-policy-ad5bc053.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_ad5bc053}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Azure_API_for_FHIR_should_use_a_customer-managed_key_to_encrypt_data_at_rest_051cba44-2429-45b9-9649-46cec11c7119/**
+          policies/CORS_should_not_allow_every_domain_to_access_your_API_for_FHIR_0fea8f8a-4169-495d-8307-30ec335f387d/**
+          policies/Azure_API_for_FHIR_should_use_private_link_1ee56206-5dd1-42ab-b02d-8aae8b1634ce/**
+          policies/CORS_should_not_allow_every_domain_to_access_your_FHIR_Service_fe1c9040-c46a-4e81-9aea-c7850fbb3aa6/**
